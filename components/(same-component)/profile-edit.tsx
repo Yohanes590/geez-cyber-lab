@@ -1,15 +1,53 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Save } from "lucide-react";
+import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
+import { ClipLoader } from "react-spinners";
+import { UserCheck } from "@/lib/(authorization)/user-check";
 export default function ProfileEdit() {
-  const [fullName, setFullName] = useState("Yohanes Mulugeta");
-  const [email, setEmail] = useState("example@gmail.com");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const userToken = Cookies.get("token");
 
-  const handleSave = (e: React.FormEvent) => {
+  useEffect(() => {
+    const SetFields = async () => {
+      const userData = await UserCheck();
+      setFullName(userData?.serverResponse.user_name);
+      setEmail(userData?.serverResponse.user_email);
+    };
+    SetFields();
+  }, []);
+
+  //loading button
+
+  const [loadingButton, setLoading] = useState<boolean>(false);
+
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    // handle save logic here
-    console.log({ fullName, email, password });
+    setLoading(true);
+    const sendToServer = await fetch("/api/profile-edit", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_name: fullName,
+        user_email: email,
+        user_password: password,
+        user_token: userToken,
+      }),
+    });
+    const serverResponse = await sendToServer.json();
+    setLoading(false);
+    if (serverResponse.status == 200) {
+      toast.success(serverResponse.message);
+      window.location.reload();
+    } else {
+      toast.error(serverResponse.message);
+    }
+    console.log(serverResponse);
   };
 
   return (
@@ -60,10 +98,13 @@ export default function ProfileEdit() {
         {/* Save Button */}
         <button
           type="submit"
-          className="w-full bg-yellow-700 text-white flex justify-center items-center gap-2 font-semibold py-2 rounded-lg hover:bg-yellow-900 transition-colors"
+          disabled={loadingButton}
+          className={`w-full bg-yellow-700 text-white flex justify-center items-center gap-2 font-semibold py-2 rounded-lg hover:bg-yellow-900 transition-colors ${
+            loadingButton ? "bg-yellow-950 cursor-no-drop" : ""
+          }`}
         >
           Save Changes
-          <Save />
+          {loadingButton ? <ClipLoader color="white" size={20} /> : <Save />}
         </button>
       </form>
     </div>

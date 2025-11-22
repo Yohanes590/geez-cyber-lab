@@ -42,7 +42,7 @@ export default function LandingPage() {
           organized environment for administrators, teachers, and students.
         </p>
         <Link
-          href="/sign-up"
+          href="/dashboard"
           className="px-8 py-3 bg-[#b7865a] text-white rounded-lg font-semibold hover:bg-[#c79a71] transition shadow-lg"
         >
           Get Started

@@ -16,6 +16,15 @@ export async function POST(request: Request) {
         status: 400,
       });
     } else {
+      if (
+        body.user_role !== "student" &&
+        body.user_role !== "parent" &&
+        body.user_role !== "teacher"
+      ) {
+        return NextResponse.json({
+          message: "internal server error please try again later",
+        });
+      }
       const genSalt = await bcrypt.genSalt(10);
       const HashedPassword = await bcrypt.hash(body.password, genSalt);
       const ID = await db.collection("usersDB").insertOne({
@@ -45,7 +54,9 @@ export async function POST(request: Request) {
       });
     }
   } catch (error: any) {
-    console.log(error);
-    return NextResponse.json({ error: error.massage }, { status: 500 });
+    return NextResponse.json(
+      { error: "internal server error" },
+      { status: 500 }
+    );
   }
 }

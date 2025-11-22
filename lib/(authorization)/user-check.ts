@@ -20,7 +20,6 @@ export async function UserCheck() {
       const LoaderDIV = document.querySelector(".main-loader") as HTMLElement;
       LoaderDIV.style.display = "none";
     }
-    console.log(serverResponse);
     const currentPath = window.location.pathname;
     const dashboardPath = `/dashboard/${role}`;
     if (!currentPath.startsWith(dashboardPath)) {

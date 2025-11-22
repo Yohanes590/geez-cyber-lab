@@ -62,9 +62,11 @@ export default function SignUpPage() {
           Cookies.set("token", data.token);
         } else if (data.status == 400) {
           toast.error(data.message);
+        } else {
+          toast.error("internal server error please try again later.");
         }
-      } catch (error: any) {
-        console.log(error.message);
+      } catch (error) {
+        toast.error("internal server error please try again later.");
       }
     }
   };
