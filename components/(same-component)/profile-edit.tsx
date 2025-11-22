@@ -20,8 +20,6 @@ export default function ProfileEdit() {
     SetFields();
   }, []);
 
-  //loading button
-
   const [loadingButton, setLoading] = useState<boolean>(false);
 
   const handleSave = async (e: React.FormEvent) => {

@@ -50,7 +50,7 @@ export default function SignUpPage() {
             grade: grade,
             section: section,
             password: password,
-            user_role: "student",
+            user_role: "parent",
           }),
         });
         const data = await res.json();

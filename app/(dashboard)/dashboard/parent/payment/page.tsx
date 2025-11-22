@@ -1,24 +1,40 @@
 "use client";
 import { useState, useEffect } from "react";
-
+import Cookies from "js-cookie";
 export default function ParentPaymentCard() {
   const [paymentInvoices, setPaymentInvoices] = useState<any[]>([]);
   const [balance, setBalance] = useState(0);
   const [accountNumber, setAccountNumber] = useState("");
 
   useEffect(() => {
-    // Simulate fetching payment data
     const fetchedPaymentData = {
-      accountNumber: "9875-5678-9012",
-      balance: 1000, // for example
+      accountNumber: ".....",
+      balance: 0,
       lastInvoices: [
         { id: "INV001", date: "2025-11-01", amount: 500, status: "Paid" },
         { id: "INV002", date: "2025-12-01", amount: 500, status: "Pending" },
       ],
     };
 
+    const postgresNeonDbConnection = async () => {
+      const token = Cookies.get("token");
+      const sendToken = await fetch("/api/parent-balance-api", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: token,
+        }),
+      });
+      const serverRespond = await sendToken.json();
+      console.log(serverRespond);
+      setAccountNumber(serverRespond.parent_account);
+      setBalance(serverRespond.parent_balance);
+    };
+    postgresNeonDbConnection();
     setAccountNumber(fetchedPaymentData.accountNumber);
-    setBalance(fetchedPaymentData.balance);
+
     setPaymentInvoices(fetchedPaymentData.lastInvoices);
   }, []);
 
@@ -39,7 +55,12 @@ export default function ParentPaymentCard() {
           <p className="text-gray-600 text-sm">Balance</p>
           <p className="text-gray-800 font-bold text-xl">{balance} ETB</p>
         </div>
-        <button className="ml-4 px-4 py-2 bg-yellow-700 text-white rounded-lg hover:bg-yellow-800 transition-colors">
+        <button
+          onClick={() => {
+            window.location.href = `${process.env.NEXT_PUBLIC_GEEZ_BANK}?account=${accountNumber}&transferTo=2301-5636-15936-6828`;
+          }}
+          className="ml-4 px-4 py-2 bg-yellow-700 text-white rounded-lg hover:bg-yellow-800 transition-colors"
+        >
           Pay Now
         </button>
       </div>

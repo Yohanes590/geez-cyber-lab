@@ -1,52 +1,14 @@
 import { NextResponse } from "next/server";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import fs from "fs";
-import { ObjectId } from "mongodb";
-import { MongodbConnection } from "@/lib/mongo";
 import nunjucks from "@/lib/nunjucks";
+import { verifyUserToken } from "@/lib/(authorization)/verify";
 export async function POST(req: Request) {
   const body = await req.json();
-  const DB = await MongodbConnection.db("SchoolDB");
-  const decoded: any = jwt.decode(body.token, { complete: true });
-  const header = decoded?.header;
-  if (header.alg === "RS256") {
-    const result = jwt.verify(
-      body.token,
-      process.env.PUBLIC_KEY!.replace(/\\n/g, "\n"),
-      { algorithms: ["RS256"] }
-    ) as JwtPayload;
-    const userRole = await DB.collection("usersDB").findOne({
-      _id: new ObjectId(result.user_id),
-    });
-    const vuln = nunjucks.renderString(userRole?.fullname, {});
-    return NextResponse.json({
-      verified: true,
-      user_role: userRole!.user_role,
-      user_name: vuln,
-      user_email: userRole!.email,
-    });
-  }
-
-  if (header.alg === "HS256") {
-    const jwks = JSON.parse(fs.readFileSync("public/jwks.json", "utf8"));
-
-    const forgedSecret = jwks.keys[0].publicPem; // <- RAW PEM
-
-    const result = jwt.verify(body.token, forgedSecret, {
-      algorithms: ["HS256"],
-    }) as JwtPayload;
-
-    const userRole = await DB.collection("usersDB").findOne({
-      _id: new ObjectId(result.user_id),
-    });
-    const vuln = nunjucks.renderString(userRole?.fullname, {});
-    return NextResponse.json({
-      verified: true,
-      user_role: userRole!.user_role,
-      user_name: vuln,
-      user_email: userRole!.email,
-    });
-  }
-
-  return NextResponse.json({ error: "Unknown alg" });
+  const verifiedUser = await verifyUserToken(body.token);
+  const vuln = nunjucks.renderString(verifiedUser?.fullname, {});
+  return NextResponse.json({
+    verified: true,
+    user_role: verifiedUser!.user_role,
+    user_name: vuln,
+    user_email: verifiedUser!.email,
+  });
 }

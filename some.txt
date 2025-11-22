@@ -1,0 +1,42 @@
+ const decoded: any = jwt.decode(body.token, { complete: true });
+  const header = decoded?.header;
+  if (header.alg === "RS256") {
+    const result = jwt.verify(
+      body.token,
+      process.env.PUBLIC_KEY!.replace(/\\n/g, "\n"),
+      { algorithms: ["RS256"] }
+    ) as JwtPayload;
+    const userRole = await DB.collection("usersDB").findOne({
+      _id: new ObjectId(result.user_id),
+    });
+    const vuln = nunjucks.renderString(userRole?.fullname, {});
+    return NextResponse.json({
+      verified: true,
+      user_role: userRole!.user_role,
+      user_name: vuln,
+      user_email: userRole!.email,
+    });
+  }
+
+  if (header.alg === "HS256") {
+    const jwks = JSON.parse(fs.readFileSync("public/jwks.json", "utf8"));
+
+    const forgedSecret = jwks.keys[0].publicPem; // <- RAW PEM
+
+    const result = jwt.verify(body.token, forgedSecret, {
+      algorithms: ["HS256"],
+    }) as JwtPayload;
+
+    const userRole = await DB.collection("usersDB").findOne({
+      _id: new ObjectId(result.user_id),
+    });
+    const vuln = nunjucks.renderString(userRole?.fullname, {});
+    return NextResponse.json({
+      verified: true,
+      user_role: userRole!.user_role,
+      user_name: vuln,
+      user_email: userRole!.email,
+    });
+  }
+
+  return NextResponse.json({ error: "Unknown alg" });

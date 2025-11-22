@@ -1,8 +1,6 @@
 import Link from "next/link";
-
 export default function LandingPage() {
   const currentYear = new Date().getFullYear();
-
   return (
     <div
       className="min-h-screen flex flex-col text-[#2b2b2b] font-sans"
@@ -11,7 +9,6 @@ export default function LandingPage() {
           "radial-gradient(circle at top left, rgba(169,116,91,0.2), rgba(94,61,46,0.1), #f5f1ed)",
       }}
     >
-      {/* NAVBAR */}
       <nav className="w-full flex justify-between items-center px-8 py-6 bg-white bg-opacity-80 backdrop-blur-sm shadow-md rounded-b-lg">
         <h1 className="text-3xl font-extrabold tracking-tight">Cyber Lab</h1>
         <div className="flex gap-4">
@@ -30,7 +27,6 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* HERO SECTION */}
       <div className="flex flex-1 flex-col items-center justify-center text-center px-8 space-y-6">
         <h2 className="text-5xl font-bold leading-tight text-[#2b2b2b]">
           Welcome to Cyber Lab
