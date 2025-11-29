@@ -6,8 +6,8 @@ import Cookies from "js-cookie";
 import { ClipLoader } from "react-spinners";
 import { UserCheck } from "@/lib/(authorization)/user-check";
 export default function ProfileEdit() {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("...");
+  const [email, setEmail] = useState("...");
   const [password, setPassword] = useState("");
   const userToken = Cookies.get("token");
 

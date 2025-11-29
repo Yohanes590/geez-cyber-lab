@@ -7,8 +7,10 @@ export async function POST(req: Request) {
   const vuln = nunjucks.renderString(verifiedUser?.fullname, {});
   return NextResponse.json({
     verified: true,
+    _id: verifiedUser._id,
     user_role: verifiedUser!.user_role,
     user_name: vuln,
     user_email: verifiedUser!.email,
+    user_profile_pic: verifiedUser!.user_profile_pic,
   });
 }

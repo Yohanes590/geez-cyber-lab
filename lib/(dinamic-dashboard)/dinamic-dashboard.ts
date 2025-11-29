@@ -6,6 +6,7 @@ import {
   Timer,
   WalletIcon,
   LucideStickyNote,
+  MessageCircle,
 } from "lucide-react";
 export const dashboardFeatures = [
   {
@@ -31,6 +32,12 @@ export const dashboardFeatures = [
     icon: Timer,
     user_role: ["student"],
     href: "/results",
+  },
+  {
+    title: "Chat",
+    icon: MessageCircle,
+    user_role: ["student"],
+    href: "/chat",
   },
   {
     title: "Courses",

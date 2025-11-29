@@ -1,5 +1,4 @@
 "use client";
-import { User2Icon } from "lucide-react";
 import { dashboardFeatures } from "@/lib/(dinamic-dashboard)/dinamic-dashboard";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
@@ -8,9 +7,11 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import LoadingScreen from "../(same-component)/wait-screen";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 export default function Sidebar() {
   const [mapDashboardButtons, setMapDashboardButtons] = useState<any[]>([]);
   const [userRole, setUserRole] = useState<string>("");
+  const [userProfileImage, setUserProfile] = useState<string | null>(null);
 
   const Logout = () => {
     if (confirm("are you suer for logout ?")) {
@@ -22,8 +23,6 @@ export default function Sidebar() {
   };
 
   const pathname = usePathname();
-
-  // username and email fetch place here
 
   const [username, setUsername] = useState<string>("...");
   const [email, setEmail] = useState<string>("...");
@@ -37,6 +36,7 @@ export default function Sidebar() {
     setMapDashboardButtons(filteredFeatures);
     setUsername(role?.serverResponse.user_name);
     setEmail(role?.serverResponse.user_email);
+    setUserProfile(role?.serverResponse.user_profile_pic);
   };
 
   useEffect(() => {
@@ -98,9 +98,14 @@ export default function Sidebar() {
           <div className="text-content">Logout</div>
         </div>
 
-        {/* Profile at bottom */}
         <div className="px-6 py-4 border-t border-yellow-200 cursor-default hover:bg-yellow-200 mt-auto flex items-center space-x-3">
-          <User2Icon className="w-10 h-10 text-yellow-600" />
+          <Image
+            width={50}
+            height={50}
+            src={userProfileImage ?? "/assets/default-profile.jpg"}
+            alt="casual profile image"
+            className="rounded-[50%]"
+          />
           <div className="flex flex-col">
             <p className="font-semibold">{username}</p>
             <p className="text-sm text-yellow-800">{email}</p>

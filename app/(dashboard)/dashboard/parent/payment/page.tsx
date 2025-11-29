@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 export default function ParentPaymentCard() {
   const [paymentInvoices, setPaymentInvoices] = useState<any[]>([]);
   const [balance, setBalance] = useState(0);
@@ -27,10 +28,13 @@ export default function ParentPaymentCard() {
           token: token,
         }),
       });
-      const serverRespond = await sendToken.json();
-      console.log(serverRespond);
-      setAccountNumber(serverRespond.parent_account);
-      setBalance(serverRespond.parent_balance);
+      try {
+        const serverRespond = await sendToken.json();
+        setAccountNumber(serverRespond.parent_account);
+        setBalance(serverRespond.parent_balance);
+      } catch (error) {
+        toast.error("internal server error!!!!");
+      }
     };
     postgresNeonDbConnection();
     setAccountNumber(fetchedPaymentData.accountNumber);
@@ -57,7 +61,7 @@ export default function ParentPaymentCard() {
         </div>
         <button
           onClick={() => {
-            window.location.href = `${process.env.NEXT_PUBLIC_GEEZ_BANK}?account=${accountNumber}&transferTo=2301-5636-15936-6828`;
+            window.location.href = `${process.env.NEXT_PUBLIC_GEEZ_BANK}?account=${accountNumber}&transferTo=${process.env.NEXT_PUBLIC_SCHOOL_ACCOUNT}`;
           }}
           className="ml-4 px-4 py-2 bg-yellow-700 text-white rounded-lg hover:bg-yellow-800 transition-colors"
         >

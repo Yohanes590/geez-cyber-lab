@@ -3,17 +3,26 @@ import { useState } from "react";
 import { BookOpen } from "lucide-react";
 import { useEffect } from "react";
 import LoadingSpinner from "@/components/(same-component)/loading-spiner";
+import Cookies from "js-cookie";
 export default function CoursesSection() {
   const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const userToken = Cookies.get("token");
   useEffect(() => {
-    fetch("/api/courses/me", { method: "POST" })
+    fetch("/api/courses/me", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: userToken,
+      }),
+    })
       .then((res) => res.json())
       .then((data) => {
         setCourses(data);
+        setLoading(false);
       });
-    setLoading(false);
   }, []);
 
   return (

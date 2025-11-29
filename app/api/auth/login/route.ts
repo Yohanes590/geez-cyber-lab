@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import { JWTEncrypt } from "@/lib/(backend)/jwt-maker";
 export async function POST(userRequest: Request) {
   const body = await userRequest.json();
-  // Find from Database
   const DB = await MongodbConnection.db("SchoolDB");
   const findEmail = await DB.collection("usersDB").findOne({
     email: body.email,

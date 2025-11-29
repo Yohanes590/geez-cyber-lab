@@ -54,7 +54,7 @@ export default function ChatRender() {
         <input
           type="text"
           value={searchParam}
-          placeholder="Search student name "
+          placeholder="Selamawit Admasu , Abenezer Dessalegn , Kaleb Mesfin ... "
           className="w-[80%] px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
           onChange={(e: any) => {
             setParam(e.target.value);

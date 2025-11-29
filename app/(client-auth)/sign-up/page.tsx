@@ -14,8 +14,6 @@ export default function SignUpPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // enable and disable button
-
   const [ButtonBoolean, setBoolean] = useState<boolean>(false);
 
   const handleSubmit = async (e: any) => {
@@ -30,8 +28,14 @@ export default function SignUpPage() {
     ) {
       toast.error("Please fill in all fields.");
       return;
-    } else if (password.length < 4) {
-      toast.error("minimum password allowed 4");
+    } else if (!email.includes("@")) {
+      toast.error("invalid email address");
+    } else if (password.length < 8) {
+      toast.error("minimum password allowed 8");
+    } else if (!/[A-Z]/.test(password)) {
+      toast.error("please mix with uppercase");
+    } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      toast.error("please use special characters");
     } else if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
       return;
@@ -46,11 +50,11 @@ export default function SignUpPage() {
           },
           body: JSON.stringify({
             fullname: fullname,
-            email: email,
+            email: email.toLowerCase(),
             grade: grade,
             section: section,
             password: password,
-            user_role: "parent",
+            user_role: "student",
           }),
         });
         const data = await res.json();
