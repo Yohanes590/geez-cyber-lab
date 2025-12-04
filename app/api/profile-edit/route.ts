@@ -2,43 +2,49 @@ import { NextResponse } from "next/server";
 import { verifyUserToken } from "@/lib/(authorization)/verify";
 import { MongodbConnection } from "@/lib/mongo";
 import bcrypt from "bcryptjs";
+
 export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const user = await verifyUserToken(body.user_token);
-    const genSalt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(body.user_password, genSalt);
-    const DB = await MongodbConnection.db("SchoolDB");
+  const bodyText = await req.text(); // read raw text/plain
+  const bodyParams = Object.fromEntries(new URLSearchParams(bodyText)); // convert to object
 
-    const findExistingEmail = await DB.collection("usersDB").findOne({
-      email: body.user_email,
+  const userToken =
+    req.headers
+      .get("cookie")
+      ?.split("; ")
+      .find((c) => c.startsWith("token="))
+      ?.split("=")[1] || "";
+
+  const user: any = await verifyUserToken(userToken);
+  const DB = await MongodbConnection.db("SchoolDB");
+
+  // Check email uniqueness if changed
+  if (user.email !== bodyParams.user_email && bodyParams.user_email) {
+    const emailExists = await DB.collection("usersDB").findOne({
+      email: bodyParams.user_email,
     });
-
-    if (!body.user_name || !body.user_email || !body.user_password)
+    if (emailExists) {
       return NextResponse.json({
-        message: "please in all required fields.",
+        message: "email already exists",
         status: 400,
       });
-    if (findExistingEmail) {
-      return NextResponse.json({
-        message: "email already exists.",
-        status: 400,
-      });
-    } else {
-      await DB.collection("usersDB").updateOne(
-        { _id: user._id },
-        {
-          $set: {
-            fullname: body.user_name,
-            email: body.user_email,
-            password: hashedPassword,
-          },
-        }
-      );
     }
-
-    return NextResponse.json({ message: "profile updated!", status: 200 });
-  } catch (err) {
-    return NextResponse.json({ message: "internal server error", status: 500 });
   }
+
+  // Build update object dynamically
+  const updateData: any = {};
+  if (bodyParams.user_name) updateData.fullname = bodyParams.user_name;
+  if (bodyParams.user_email) updateData.email = bodyParams.user_email;
+  if (bodyParams.user_password) {
+    const genSalt = await bcrypt.genSalt(10);
+    updateData.password = await bcrypt.hash(bodyParams.user_password, genSalt);
+  }
+  if (bodyParams.user_profile_pic)
+    updateData.user_profile_pic = bodyParams.user_profile_pic;
+
+  await DB.collection("usersDB").updateOne(
+    { _id: user._id },
+    { $set: updateData }
+  );
+
+  return NextResponse.json({ message: "successful updated", status: 200 });
 }

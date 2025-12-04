@@ -33,7 +33,6 @@ export default function ChatBox() {
     setUsername(checkingUsername);
     setMessages(messages);
     setLoading(false);
-    console.log(messages);
   };
 
   useEffect(() => {
@@ -53,12 +52,10 @@ export default function ChatBox() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        token: UserToken,
         message: input,
       }),
     });
     const serverRespond = await sendMessageIntoServer.json();
-    console.log(serverRespond);
     if (serverRespond.status == 200) {
       window.location.reload();
     } else {

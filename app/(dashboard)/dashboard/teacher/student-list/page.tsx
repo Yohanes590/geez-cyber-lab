@@ -33,7 +33,6 @@ export default function ChatRender() {
       const serverResponse = await sendNameIntoServer.json();
       setButtonLoading(false);
       setLoading(false);
-      console.log(serverResponse);
       if (serverResponse.length == 0) {
         setLoading(true);
         toast.error("no available student");

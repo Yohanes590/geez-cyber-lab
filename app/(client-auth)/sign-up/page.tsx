@@ -40,8 +40,8 @@ export default function SignUpPage() {
       toast.error("Passwords do not match.");
       return;
     } else {
+      const LoadingToast = toast.loading("Creating Account");
       try {
-        const LoadingToast = toast.loading("Creating Account");
         setBoolean(true);
         const res = await fetch("/api/auth/sign-up", {
           method: "POST",
@@ -58,9 +58,10 @@ export default function SignUpPage() {
           }),
         });
         const data = await res.json();
-        toast.dismiss(LoadingToast);
-        setBoolean(false);
         if (data.status == 200) {
+          toast.dismiss(LoadingToast);
+          setBoolean(false);
+
           window.location.href = "/dashboard";
           toast.success(data.message);
           Cookies.set("token", data.token);
@@ -70,6 +71,8 @@ export default function SignUpPage() {
           toast.error("internal server error please try again later.");
         }
       } catch (error) {
+        setBoolean(false);
+        toast.dismiss(LoadingToast);
         toast.error("internal server error please try again later.");
       }
     }
@@ -80,7 +83,7 @@ export default function SignUpPage() {
         <div className="p-6 sm:p-8">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-12 h-12 rounded-full bg-amber-700 flex items-center justify-center text-white font-semibold shadow">
-              CL
+              GZ
             </div>
             <div>
               <h1 className="text-2xl font-semibold text-amber-900">

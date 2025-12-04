@@ -7,7 +7,6 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import LoadingScreen from "../(same-component)/wait-screen";
 import { toast } from "react-hot-toast";
-import Image from "next/image";
 export default function Sidebar() {
   const [mapDashboardButtons, setMapDashboardButtons] = useState<any[]>([]);
   const [userRole, setUserRole] = useState<string>("");
@@ -37,6 +36,7 @@ export default function Sidebar() {
     setUsername(role?.serverResponse.user_name);
     setEmail(role?.serverResponse.user_email);
     setUserProfile(role?.serverResponse.user_profile_pic);
+    console.log(role?.serverResponse);
   };
 
   useEffect(() => {
@@ -99,13 +99,14 @@ export default function Sidebar() {
         </div>
 
         <div className="px-6 py-4 border-t border-yellow-200 cursor-default hover:bg-yellow-200 mt-auto flex items-center space-x-3">
-          <Image
-            width={50}
-            height={50}
-            src={userProfileImage ?? "/assets/default-profile.jpg"}
-            alt="casual profile image"
-            className="rounded-[50%]"
-          />
+          <div className="w-15 h-15 rounded-full overflow-hidden shadow-md flex-shrink-0">
+            <img
+              src={userProfileImage ?? "/assets/default-profile.jpg"}
+              alt="Profile picture"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
           <div className="flex flex-col">
             <p className="font-semibold">{username}</p>
             <p className="text-sm text-yellow-800">{email}</p>

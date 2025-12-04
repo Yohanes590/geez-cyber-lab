@@ -42,7 +42,7 @@ export default function LoginPage() {
         <div className="p-6 sm:p-8">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-12 h-12 rounded-full bg-amber-700 flex items-center justify-center text-white font-semibold shadow">
-              CL
+              GZ
             </div>
             <div>
               <h1 className="text-2xl font-semibold text-amber-900">

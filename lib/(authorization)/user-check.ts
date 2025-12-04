@@ -10,9 +10,6 @@ export async function UserCheck() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        token: get_token,
-      }),
     });
     const serverResponse = await sendRequest.json();
     if (serverResponse.verified) {

@@ -4,16 +4,21 @@ import { verifyUserToken } from "@/lib/(authorization)/verify";
 export async function POST(userRequest: Request) {
   const body = await userRequest.json();
   const DB = await MongodbConnection.db("SchoolDB");
-  const verifiedUser = await verifyUserToken(body.token);
+  const userToken =
+    userRequest.headers
+      .get("cookie")
+      ?.split("; ")
+      .find((c) => c.startsWith("token="))
+      ?.split("=")[1] || "";
+  const verifiedUser = await verifyUserToken(userToken);
   const now = new Date();
   const hours = now.getHours();
   const minutes = now.getMinutes().toString().padStart(2, "0");
-
   const time = `${hours}:${minutes}`;
-
+  const user: any = verifiedUser;
   const MessageContent = {
-    user_id: verifiedUser._id,
-    user_name: verifiedUser.fullname,
+    user_id: user._id,
+    user_name: user.fullname,
     text: body.message,
     time_stamp: time,
   };

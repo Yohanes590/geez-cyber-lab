@@ -8,7 +8,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Cyber Lab",
+  title: "Geez School",
   description: "A playground for cyber security experiments and learning.",
 };
 

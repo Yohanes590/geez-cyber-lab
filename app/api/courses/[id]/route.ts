@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import { MongodbConnection } from "@/lib/mongo";
-export async function POST(
+export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
