@@ -26,6 +26,22 @@ export default function ProfileEdit() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!email.includes("@")) {
+      toast.error("please insert valid email");
+    }
+    if (password) {
+      if (!/[A-Z]/.test(password)) {
+        toast.error("please include A-Z character");
+      } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        toast.error("please mix with special character");
+        sendToServer();
+      }
+    } else {
+      sendToServer();
+    }
+  };
+
+  async function sendToServer() {
     setLoading(true);
     const sendToServer = await fetch("/api/profile-edit", {
       method: "POST",
@@ -43,7 +59,7 @@ export default function ProfileEdit() {
     } else {
       toast.error("internal server error");
     }
-  };
+  }
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-yellow-50 rounded-xl shadow-md">

@@ -49,7 +49,7 @@ export default function LoginPage() {
                 Login into your account
               </h1>
               <p className="text-sm text-stone-600">
-                Cyber Lab — Secure platform learing
+                geez-school — Secure platform learning
               </p>
             </div>
           </div>
@@ -120,7 +120,7 @@ export default function LoginPage() {
         <div className="bg-amber-50/70 px-6 py-3 text-xs text-stone-600 border-t border-amber-100">
           <div className="flex items-center justify-between">
             <span>Secure • Private • Student friendly</span>
-            <span className="text-amber-700 font-semibold">Cyber Lab</span>
+            <span className="text-amber-700 font-semibold">Geez-School</span>
           </div>
         </div>
       </div>

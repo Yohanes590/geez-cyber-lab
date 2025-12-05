@@ -9,7 +9,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Geez School",
-  description: "A playground for cyber security experiments and learning.",
+  description: "An educational platform for experiments and learning.",
 };
 
 export default function RootLayout({

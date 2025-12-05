@@ -68,7 +68,7 @@ export default function ChatBox() {
       {/* Header */}
       <div className="px-6 py-4 bg-[#A65F00] text-white flex justify-between items-center">
         <h2 className="text-xl font-semibold">Student Discussion Group</h2>
-        <span className="text-sm opacity-80">Cyber Lab</span>
+        <span className="text-sm opacity-80">Geez-School</span>
       </div>
 
       {/* Chat Messages */}

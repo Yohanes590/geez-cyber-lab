@@ -51,12 +51,12 @@ export default function Sidebar() {
         <div className="flex flex-col items-center justify-center py-6 border-b border-yellow-200">
           <div className="flex items-center space-x-2">
             <div className="bg-yellow-600 text-white font-bold text-xl w-10 h-10 flex items-center justify-center rounded">
-              CB
+              GZ
             </div>
             <div>
-              <h1 className="text-xl font-bold">Cyber Lab</h1>
+              <h1 className="text-xl font-bold">Geez School</h1>
               <p className="text-sm text-yellow-800">
-                Student Testing Platform
+                Student Dashboard Overview
               </p>
             </div>
           </div>
