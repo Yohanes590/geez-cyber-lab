@@ -1,4 +1,4 @@
-# Cyber Lab -- Vulnerable Assessment Platform
+#Geez Cyber Lab -- Vulnerable Assessment Platform
 
 Cyber Lab is a purposely vulnerable web application designed for
 cybersecurity student assessments. Unlike DVWA, Cyber Lab is focused on
