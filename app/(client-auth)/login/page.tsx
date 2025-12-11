@@ -1,6 +1,7 @@
 "use client";
 import { ClipLoader } from "react-spinners";
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import Cookies from "js-cookie";
@@ -41,8 +42,13 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-gradient-to-b from-amber-50/60 to-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-amber-100 overflow-hidden">
         <div className="p-6 sm:p-8">
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 rounded-full bg-amber-700 flex items-center justify-center text-white font-semibold shadow">
-              GZ
+            <div className="w-12 h-12 rounded-full overflow-hidden bg-amber-700 flex items-center justify-center text-white font-semibold shadow">
+              <Image
+                width={50}
+                height={50}
+                src="/assets/school-logo.avif"
+                alt="School Logo"
+              />
             </div>
             <div>
               <h1 className="text-2xl font-semibold text-amber-900">

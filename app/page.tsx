@@ -1,13 +1,18 @@
 import Link from "next/link";
-
+import Image from "next/image";
 export default function LandingPage() {
   const currentYear = new Date().getFullYear();
   return (
     <main className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-stone-50 text-stone-900 font-sans">
       <header className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between sticky top-0 bg-white/60 backdrop-blur-sm z-30">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-md bg-amber-700 text-white font-bold flex items-center justify-center">
-            GZ
+          <div className="w-12 h-12 rounded-full overflow-hidden bg-amber-700 flex items-center justify-center text-white font-semibold shadow">
+            <Image
+              width={50}
+              height={50}
+              src="/assets/school-logo.avif"
+              alt="School Logo"
+            />
           </div>
           <div>
             <span className="font-extrabold text-xl">Geez-School</span>
