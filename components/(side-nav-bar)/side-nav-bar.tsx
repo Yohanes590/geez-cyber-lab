@@ -54,7 +54,7 @@ export default function Sidebar() {
               GZ
             </div>
             <div>
-              <h1 className="text-xl font-bold">Geez School</h1>
+              <h1 className="text-xl font-bold">Alem Collage</h1>
               <p className="text-sm text-yellow-800">
                 Student Dashboard Overview
               </p>

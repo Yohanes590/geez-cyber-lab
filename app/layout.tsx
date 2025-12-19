@@ -8,7 +8,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Geez School",
+  title: "Alem Collage",
   description: "An educational platform for experiments and learning.",
 };
 

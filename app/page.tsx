@@ -15,7 +15,7 @@ export default function LandingPage() {
             />
           </div>
           <div>
-            <span className="font-extrabold text-xl">Geez-School</span>
+            <span className="font-extrabold text-xl">Alem Collage</span>
             <div className="text-xs text-stone-500">Learning, simplified</div>
           </div>
         </div>
@@ -56,7 +56,7 @@ export default function LandingPage() {
       >
         <div className="space-y-6">
           <h1 className="text-5xl md:text-6xl font-extrabold leading-tight text-[#220800c0]">
-            Build confident learners with Geez School
+            Build confident learners with Alem Collage
           </h1>
           <p className="text-lg text-stone-600 max-w-xl">
             A modern, secure, and teacher-friendly platform that helps schools
@@ -135,7 +135,7 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div>
               <h2 className="text-3xl font-bold mb-4">
-                Why schools choose Geez School
+                Why schools choose Alem Collage
               </h2>
               <p className="text-stone-600 mb-6">
                 We combine a simple UX with powerful tools so teachers spend
@@ -258,7 +258,7 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-3 gap-6">
           <blockquote className="p-6 border rounded-lg bg-amber-50">
             <p className="mb-3 text-stone-700">
-              "Geez School transformed how we manage assignments — it's simple
+              "Alem Collage transformed how we manage assignments — it's simple
               and reliable."
             </p>
             <cite className="text-sm text-stone-600">
@@ -287,7 +287,8 @@ export default function LandingPage() {
       <footer className="bg-stone-100 border-t mt-12">
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-sm text-stone-600">
-            © {currentYear} Powered By Geez Security — Learn. Practice. Grow.
+            © {currentYear} Powered By Alem Trading PLCurity — Learn. Practice.
+            Grow.
           </div>
           <div className="flex gap-4 text-sm">
             <Link href="/" className="hover:underline">
