@@ -1,46 +1,51 @@
-#Geez Cyber Lab -- Vulnerable Assessment Platform
+# Geez Cyber Lab 🛡️🧪
+> A Purposely Vulnerable Assessment Platform for Next-Gen Cybersecurity Education.
 
-Cyber Lab is a purposely vulnerable web application designed for
-cybersecurity student assessments. Unlike DVWA, Cyber Lab is focused on
-testing and grading students instead of teaching them. Each module
-contains real-world vulnerabilities that students must exploit to
-complete their lab exams.
+[![Security-Safe](https://img.shields.io/badge/Security-Intentionally_Vulnerable-red.svg)](#-warning--disclaimer)
+[![Platform](https://img.shields.io/badge/Environment-Isolated_Labs-blue.svg)](#installation)
+[![Author](https://img.shields.io/badge/Developer-Jo_(Yohanes_Mulugeta)-green.svg)](https://github.com/yohanesmulugeta)
 
-## Features
+Unlike traditional training environments like DVWA or OWASP Juice Shop which focus strictly on *teaching* and step-by-step guidance, **Geez Cyber Lab** is engineered specifically for **student assessment, testing, and automated grading**. 
 
--   Multiple vulnerable modules:
-    -   XSS
-    -   SQL Injection
-    -   OTP Bypass
-    -   Username Enumeration
-    -   JWT Attacks
-    -   IDOR
-    -   Business Logic Flaws
-    -   CORS
-    -   SSRF
-    -   NoSQL Injection
--   Auto-grading logic for each challenge
--   Instructor assignment management
--   Student dashboard
--   SQLite database integration
--   Simple UI
--   Easy deployment for labs or exams
+It provides instructors with a robust, black-box style infrastructure to evaluate students' hands-on offensive security capabilities in realistic lab and exam environments.
 
-## Installation
+---
 
-1.  Clone the repository\
-2.  Place the project inside your server directory (XAMPP, Laragon, or
-    Linux Apache)\
-3.  Make sure the SQLite database file has proper write/read
-    permissions\
-4.  Open the project in the browser and start testing the modules
+## 🚀 Key Features & Architecture
 
-## Warning
+* **Automated Grading Engine:** Built-in verification logic for each challenge that programmatically validates student exploits.
+* **Instructor Command Center:** Streamlined dashboard to assign tasks, open/close modules, and monitor exam progress.
+* **Student Matrix Dashboard:** Clear interface for students to track active labs, submit flags/proofs, and view immediate grading feedback.
+* **Zero-Overhead Deployment:** Lightweight PHP/SQLite architecture requiring minimal server overhead—deployable on local testbeds in seconds.
 
-Cyber Lab contains intentional security vulnerabilities.\
-Do not deploy it on a public or production server.\
-Use it only in isolated environments, labs, or exam setups.
+---
 
-## Developer
+## 🎯 Supported Vulnerability Modules
 
-Built by Jo (Yohanes Mulugeta)
+The platform features a curated matrix of OWASP Top 10 vulnerabilities, structured to test critical thinking rather than simple pattern matching:
+
+| Category | Vulnerability Module | Assessment Focus |
+| :--- | :--- | :--- |
+| **Injection** | SQL Injection (SQLi) & NoSQL Injection | Dynamic query bypass & data exfiltration |
+| **Authentication** | OTP Bypass & Username Enumeration | Brute-force resistance & logic sequence testing |
+| **Session State** | JWT Attacks & IDOR | Token tampering, signature validation bypass, & privilege escalation |
+| **Client-Side** | Cross-Site Scripting (XSS) & CORS | Session hijacking & cross-origin data theft |
+| **Server-Side** | Server-Side Request Forgery (SSRF) | Internal network scanning & metadata access |
+| **Business Logic** | Multi-step Transaction Flaws | Manipulation of workflow states & boundary values |
+
+---
+
+## ⚙️ Installation & Setup
+
+Geez Cyber Lab is designed to run in highly restricted environments with minimal external dependencies.
+
+### Prerequisites
+* Web Server (Apache, Nginx, or local stacks like XAMPP / Laragon)
+* PHP 8.x+ with SQLite3 support enabled (`php-sqlite3`)
+
+### Deployment Steps
+
+1. **Clone the Repository**
+   ```bash
+   git clone [https://github.com/yourusername/geez-cyber-lab.git](https://github.com/yourusername/geez-cyber-lab.git)
+   cd geez-cyber-lab
